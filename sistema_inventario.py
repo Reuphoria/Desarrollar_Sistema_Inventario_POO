@@ -47,16 +47,41 @@ class Inventario:
             print(producto)
 
 def menu_principal():
-    try:
-        opcion = int(input("""Menu\n
+    inventario = Inventario()
+    while True:
+        try:
+            opcion = int(input("""Menu\n
                            
-        1. Agregar Producto\n
-        2. Buscar Producto\n
-        3. Listar Productos\n
-        4. Calcular Valor\n
-        5. Exit                      
-        """))
-    except:
-        pass
+            1. Agregar Producto\n
+            2. Buscar Producto\n
+            3. Listar Productos\n
+            4. Calcular Valor\n
+            5. Exit                      
+            """))
+            #para la case Inventario la llamamos
+            #vamos a añadir un producto nuevo el cual lleva 
+            if opcion == 1:
+                nombre = str(input("Digite el nombre del producto"))
+                precio = float(input("Digite el precio del producto"))
+                cantidad = int(input("Digite la cantidad del producto"))
+                producto = Producto(nombre, precio, cantidad)
+                inventario.agregar_producto(producto)
+            #buscar producto
+            elif opcion == 2:
+               nombre = str(input("Digite el nombre el producto que quiere buscar")) 
+               print(inventario.buscar_producto(nombre))
+            elif opcion == 3:
+                pass
+            elif opcion == 4:
+                pass
+            elif opcion == 5:
+                break
+            else:
+                print("Valor invalido")
+                
+        except ValueError:
+            print("valor invalido")
+        
 if __name__ == "__main__":
-    pass
+    menu_principal()
+    
