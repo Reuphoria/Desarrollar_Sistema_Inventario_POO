@@ -7,8 +7,7 @@ class Producto:
     
     #metodos actualizar_precio(nuevo_precio): para modificar el precio validando que sea mayor o igual que cero
     def actualizar_precio(self, nuevo_precio):
-        if nuevo_precio >= 0:
-            self.precio = nuevo_precio
+        self.precio = nuevo_precio
 
     #metodo actualizar_cantidad(nueva_cantidad): para modificar la cantidad validando que sea mayor o igual a cero
     def actualizar_cantidad(self, nueva_cantidad):
@@ -39,7 +38,7 @@ class Inventario:
     def calcular_valor_inventario(self):
         Total_productos = 0
         for producto in self.almacenar_productos:
-            Total_producto += producto.calcular_valor_total()
+            Total_productos += producto.calcular_valor_total()
         return Total_productos
     # mostrar todos los productos del inventario
     def listar_productos(self):
@@ -50,34 +49,53 @@ def menu_principal():
     inventario = Inventario()
     while True:
         try:
-            opcion = int(input("""Menu\n
-                           
-            1. Agregar Producto\n
-            2. Buscar Producto\n
-            3. Listar Productos\n
-            4. Calcular Valor\n
-            5. Exit                      
+            opcion = int(input("""
+                    MENU\n            
+            1. Agregar Producto
+            2. Buscar Producto
+            3. Listar Productos
+            4. Calcular Valor
+            5. Exit                                
             """))
             #para la case Inventario la llamamos
             #vamos a añadir un producto nuevo el cual lleva 
             if opcion == 1:
-                nombre = str(input("Digite el nombre del producto"))
-                precio = float(input("Digite el precio del producto"))
-                cantidad = int(input("Digite la cantidad del producto"))
+                nombre = str(input("Digite el nombre del producto: ")).strip()
+                if nombre == "":
+                    print("El nombre no puede estar vacio")
+                    continue
+                elif nombre.isdigit():
+                    print("El nombre no puede ser solo números.")
+                    continue
+                precio = float(input("Digite el precio del producto, el valor debe ser mayor a 0: "))
+                if precio <= 0:
+                    print("El precio debe ser mayor a 0")
+                    continue
+                cantidad = int(input("Digite la cantidad del producto: "))
+                if cantidad <= 0:
+                    print("la cantidad debe ser mayor a 0")
+                    continue
                 producto = Producto(nombre, precio, cantidad)
                 inventario.agregar_producto(producto)
             #buscar producto
             elif opcion == 2:
-               nombre = str(input("Digite el nombre el producto que quiere buscar")) 
-               print(inventario.buscar_producto(nombre))
+               nombre = input("Digite el nombre el producto que quiere buscar: ")
+               encontrado = inventario.buscar_producto(nombre)
+               if encontrado is None:
+                   print("No se encuentra producto con el nombre: ", nombre)
+               else:
+                   print(encontrado)
+                   
+
             elif opcion == 3:
-                pass
+                inventario.listar_productos()
             elif opcion == 4:
-                pass
+                valor_inventario = inventario.calcular_valor_inventario()
+                print("El valor total del inventario es de: ", valor_inventario)
             elif opcion == 5:
                 break
             else:
-                print("Valor invalido")
+                print(f"El número: {opcion} no esta entre las opciones")
                 
         except ValueError:
             print("valor invalido")
